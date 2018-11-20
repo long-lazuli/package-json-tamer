@@ -1,4 +1,4 @@
-# Prettier `package.json`
+# `package.json` tamer
 
 [![Build Status](https://travis-ci.org/cameronhunter/prettier-package-json.svg?branch=master)](https://travis-ci.org/cameronhunter/prettier-package-json) [![npm](https://img.shields.io/npm/v/prettier-package-json.svg)](https://www.npmjs.com/package/prettier-package-json)
 
