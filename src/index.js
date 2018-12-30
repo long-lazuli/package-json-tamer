@@ -10,7 +10,7 @@ function stringify(object, options) {
   const stringifiedSections = Object.keys(object)
     .filter( sectionName => object[sectionName] )
     .map( sectionName => {
-      
+
       let sectionStartedByNewLine = false
       let sectionData = JSON
         .stringify(object[sectionName], null, space)
@@ -22,8 +22,9 @@ function stringify(object, options) {
 
             line = line.replace(/^\s*"\\n/, `\n${newLineSpace}"\\n`)
             if( i == 1 && originalLine !== line ) sectionStartedByNewLine = true
-
+            
             line = line.replace(/": "\\r/, `":\n${newLineSpace}"\\r`)
+           
             if( i == (allLines.length - 1) && sectionStartedByNewLine ) line = `\n${space}${line}`
 
           }

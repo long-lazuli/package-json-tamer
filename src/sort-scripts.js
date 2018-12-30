@@ -2,14 +2,22 @@ const sortObject = require('sort-object-keys');
 const orderBy = require('sort-order');
 
 const PREFIXES = /^(pre|post)/;
-const BACKSLASHES = /^(?:\\[nrt])*/;
+// const BACKSLASHES = /^(?:\\[nrt])*/;
+const BACKSLASHES = /^(?:[\n\r\t])*/;
 
 // Sort alphabetically by script name excluding pre/post prefixes
 function scriptNameArbitrary(keysOrder){
   return function(...args) {
-    const [a, b] = args.map((arg) => keysOrder.indexOf( arg.replace(BACKSLASHES, '').replace(PREFIXES, '')) );
 
-    if (a !== b && ( a == -1 || b == -1 ) ) {
+    const [a, b] = args
+      .map((arg) => keysOrder.findIndex( key => {
+        const argWithoutSlashes = arg.replace(BACKSLASHES, '')
+        return argWithoutSlashes.indexOf(key) == 0
+          || argWithoutSlashes.replace(PREFIXES, '').indexOf(key) == 0
+      } ) )
+      .map( i => i === -1 ? keysOrder.length : i );
+
+    if (a !== b) {
       return a < b ? -1 : 1;
     } else {
       return 0;

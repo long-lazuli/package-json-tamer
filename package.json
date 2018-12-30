@@ -19,17 +19,16 @@
   ],
   "scripts": {
   
-  "\n# Sample of use:":
-  "\r# > This is a description of the section",
-    "precommit": "package-json-tamer --write && git add package.json",
+  "\n# Available run-scripts commands:":
+  "\r# > Not much here...",
+    "test": "jest",
     "preversion": "npm test",
-    "version": "git push && git push --tags",
-    "test": "jest"
+    "version": "git push && git push --tags"
   
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run precommit"
+      "pre-commit": "package-json-tamer --write"
     }
   },
   "dependencies": {

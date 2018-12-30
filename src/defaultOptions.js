@@ -72,7 +72,6 @@ module.exports = Object.freeze({
     /**
      * Comments first:
      */
-    'test',
     '#'
   ]
 
