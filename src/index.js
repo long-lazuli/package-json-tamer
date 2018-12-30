@@ -5,10 +5,35 @@ const sortUsers = require('./sort-contributors');
 const sortFiles = require('./sort-files');
 
 function stringify(object, options) {
-  const space = options.useTabs ? '\t' : options.tabWidth;
-  const stringified = JSON.stringify(object, null, space) + '\n';
-  // console.log(stringified)
-  return stringified
+  const space = options.useTabs ? '\t' : Array(options.tabWidth+1).join(' ');
+
+  const stringifiedSections = Object.keys(object)
+    .filter( sectionName => object[sectionName] )
+    .map( sectionName => {
+      
+      let sectionStartedByNewLine = false
+      let sectionData = JSON
+        .stringify(object[sectionName], null, space)
+        .split('\n')
+        .reduce((str, line, i, allLines) => {
+          const originalLine = line
+          if( sectionName === "scripts" ) {
+            const newLineSpace = space// + space
+
+            line = line.replace(/^\s*"\\n/, `\n${newLineSpace}"\\n`)
+            if( i == 1 && originalLine !== line ) sectionStartedByNewLine = true
+
+            line = line.replace(/": "\\r/, `":\n${newLineSpace}"\\r`)
+            if( i == (allLines.length - 1) && sectionStartedByNewLine ) line = `\n${space}${line}`
+
+          }
+          return `${str}${i?'\n'+space:''}${line}`
+        }, '')
+        
+      return `${space}"${sectionName}": ${sectionData}`
+    } )
+
+  return `{\n${stringifiedSections.join(',\n')}\n}\n`
 }
 
 function format(packageJson, opts) {

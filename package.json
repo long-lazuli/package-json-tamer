@@ -18,11 +18,14 @@
     "src"
   ],
   "scripts": {
-    "\n# Sample of use:": "\r# \\n: put a new line before the line\n\\r: return to the begining of line.",
+  
+  "\n# Sample of use:":
+  "\r# > This is a description of the section",
     "precommit": "package-json-tamer --write && git add package.json",
-    "test": "jest",
     "preversion": "npm test",
-    "version": "git push && git push --tags"
+    "version": "git push && git push --tags",
+    "test": "jest"
+  
   },
   "husky": {
     "hooks": {
