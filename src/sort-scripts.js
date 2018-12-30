@@ -1,11 +1,26 @@
 const sortObject = require('sort-object-keys');
 const orderBy = require('sort-order');
 
-const PRE_OR_POST_PREFIX = /^(pre|post)/;
+const PREFIXES = /^(pre|post)/;
+const BACKSLASHES = /^(?:\\[nrt])*/;
 
 // Sort alphabetically by script name excluding pre/post prefixes
+function scriptNameArbitrary(keysOrder){
+  return function(...args) {
+    const [a, b] = args.map((arg) => keysOrder.indexOf( arg.replace(BACKSLASHES, '').replace(PREFIXES, '')) );
+
+    if (a !== b && ( a == -1 || b == -1 ) ) {
+      return a < b ? -1 : 1;
+    } else {
+      return 0;
+    }
+
+  }
+}
+
 function scriptName(...args) {
-  const [a, b] = args.map((arg) => arg.replace(PRE_OR_POST_PREFIX, ''));
+  const [a, b] = args.map((arg) => arg.replace(BACKSLASHES, '').replace(PREFIXES, ''));
+  
   if (a !== b) {
     return a < b ? -1 : 1;
   } else {
@@ -14,7 +29,9 @@ function scriptName(...args) {
 }
 
 // Sort by pre, script, post
-function prePostHooks(a, b) {
+function prefixesOrdering(...args) {
+  const [a, b] = args.map((arg) => arg.replace(BACKSLASHES, ''));
+
   if (a.startsWith('pre') || b.startsWith('post')) {
     return -1;
   } else if (a.startsWith('post') || b.startsWith('pre')) {
@@ -24,9 +41,14 @@ function prePostHooks(a, b) {
   }
 }
 
-const order = orderBy(scriptName, prePostHooks);
 
-module.exports = function sortScripts(scripts = {}) {
+module.exports = function sortScripts(scripts = {}, scriptsKeyOrder= []) {
+  const order = orderBy(
+    scriptNameArbitrary(scriptsKeyOrder),
+    scriptName,
+    prefixesOrdering
+  );
+
   const keys = Object.keys(scripts);
   if (keys.length === 0) {
     return {};

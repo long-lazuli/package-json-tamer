@@ -2,6 +2,7 @@ module.exports = Object.freeze({
   useTabs: false,
   tabWidth: 2,
   expandUsers: false,
+  interpretBackslashes: true,
   keyOrder: [
     /**
      * Details
@@ -36,7 +37,8 @@ module.exports = Object.freeze({
     'directories',
     'scripts',
     'config',
-
+    'bundlesize',
+    'husky',
     /**
      * Dependencies
      */
@@ -65,5 +67,12 @@ module.exports = Object.freeze({
      * Package publishing configuration
      */
     'publishConfig'
+  ],
+  scriptsKeyOrder: [
+    /**
+     * Comments first:
+     */
+    '#'
   ]
+
 });

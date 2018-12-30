@@ -1,27 +1,33 @@
 {
-  "name": "prettier-package-json",
+  "name": "package-json-tamer",
   "description": "Prettier formatter for package.json files",
   "license": "MIT",
   "author": "Cameron Hunter <hello@cameronhunter.co.uk>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cameronhunter/prettier-package-json"
+    "url": "https://github.com/long-lazuli/package-json-tamer"
   },
-  "bugs": "https://github.com/cameronhunter/prettier-package-json/issues",
+  "bugs": "https://github.com/cameronhunter/package-json-tamer/issues",
   "version": "2.0.1",
   "main": "src/index.js",
   "bin": {
-    "prettier-package-json": "./bin/prettier-package-json"
+    "package-json-tamer": "./bin/package-json-tamer"
   },
   "files": [
     "bin",
     "src"
   ],
   "scripts": {
-    "precommit": "./bin/prettier-package-json --write && git add package.json",
+    "\n# Sample of use:": "\r# \\n: put a new line before the line\n\\r: return to the begining of line.",
+    "precommit": "package-json-tamer --write && git add package.json",
     "test": "jest",
     "preversion": "npm test",
     "version": "git push && git push --tags"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
   },
   "dependencies": {
     "commander": "^2.18.0",
